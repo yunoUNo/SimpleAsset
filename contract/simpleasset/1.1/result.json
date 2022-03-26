@@ -1,0 +1,14 @@
+[
+    {"TxId":"b202acdab4a1018bba6d46d857603fbc6d67302c0c38124ec98541ca29043c83", 
+        "Value":{"key":"Bob","Value":"20000"}, 
+        "Timestamp":"2022-03-08 03:11:35.988564235 +0000 UTC", 
+        "IsDelete":"false"},
+    {"TxId":"c1f003546838e6a2394f585222f6df518b44e7facc83b7b645b5892f8e81ff55", 
+        "Value":{"key":"Bob","Value":"25000"}, 
+        "Timestamp":"2022-03-08 03:11:39.136652038 +0000 UTC", 
+        "IsDelete":"false"},
+    {"TxId":"ee09d31055d7c374aa5b2b4aa9f474112fb98ae94585f03e051fe74f327d05d8",
+            "Value":null, 
+            "Timestamp":"2022-03-08 03:11:42.643811091 +0000 UTC", 
+            "IsDelete":"true"}
+]

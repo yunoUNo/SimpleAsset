@@ -1,0 +1,30 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#########!!띄어쓰기랑 - 이거 형식 무조건 잘 유지해야함!!!
+OrdererOrgs:
+  - Name: Orderer
+    Domain: example.com
+    Specs:
+      - Hostname: orderer
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.example.com
+    Template:
+      Count: 1   # peer의 갯수 
+    Users:
+      Count: 1   # 기등록된 Application사용자 갯수
+
+  - Name: Org2
+    Domain: org2.example.com
+    Template:
+      Count: 1   # peer의 갯수 
+    Users:
+      Count: 1   # 기등록된 Application사용자 갯수  
+      
+  - Name: Org3
+    Domain: org3.example.com
+    Template:
+      Count: 1   # peer의 갯수 
+    Users:
+      Count: 1   # 기등록된 Application사용자 갯수

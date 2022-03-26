@@ -1,0 +1,74 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+
+    - &Org1
+        Name: Org1MSP
+        ID: Org1MSP
+        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org1.example.com
+              Port: 7051
+    - &Org2
+        Name: Org2MSP
+        ID: Org2MSP
+        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org2.example.com
+              Port: 7051 #나중에 포트포워딩으로 다른 포트번호 쓸거임. 고대로 해도 됨.
+    - &Org3
+        Name: Org3MSP
+        ID: Org3MSP
+        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org3.example.com
+              Port: 7051
+
+Application: &ApplicationDefaults
+    Organizations:
+
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer.example.com:7050
+    BatchTimeout: 2s   # 블럭생성주기. but 2초 안에 블럭이 가득 차면 다음 블럭이 생성될 수 있다.
+    BatchSize:   # 블럭 최대 크기.
+        MaxMessageCount: 10   # tx는 10개
+        AbsoluteMaxBytes: 99 MB   # 512Kb~99Mb 까지
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+Profiles:       # config 에 genesis 블럭을 만들어주는 프로파일
+    ThreeOrgOrdererGenesis:   # label(profile name)   
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+                    - *Org3
+    ThreeOrgChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+                - *Org3
+
