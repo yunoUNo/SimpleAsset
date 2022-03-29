@@ -25,12 +25,13 @@ type Asset struct{
 
 // 3. Init 함수
 func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response{
-	args := stub.GetStringArgs()
+	args := stub.GetStringArgs()  // CLI or Application 에서 전달된 요소 가져옴.
 
 	if len(args) != 2 {
 		return shim.Error("Incorrect argumets. Explect a key and value")
 	}
-	err := stub.PutState(args[0], []byte(args[1]))
+
+	err := stub.PutState(args[0], []byte(args[1])) // 원장 입력
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Failed to create asset: %s", args[0]))
 		// return shim.Error("Failed to create asset: "+args[0])
@@ -38,22 +39,10 @@ func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response{
 
 	return shim.Success([]byte("init success"))
 }
-// 4. Invoke 함수
+// 4. Invoke. 체인코드 실행
 func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response{
 	fn, args := stub.GetFunctionAndParameters()
-	/*
-	if fn == "set" {
-		return t.Set(stub, args)
-	} else if fn == "get" {
-		return t.Get(stub, args)
-	} else if fn =="del"{
-		return t.Del(stub, args)
-	} else if fn =="transfer"{
-		return t.Transfer(stub, args)
-	} else if fn == "history"{
-		return t.History(stub, args)
-	}
-*/
+	
 	switch fn{
 	case "set":
 		return t.Set(stub, args)
@@ -70,7 +59,7 @@ func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response{
 	return shim.Error("Not supported function name"+ fn )
 }
 
-// 5. set 함수
+// 5. set 함수. Asset 생성
 func (t *SimpleAsset) Set(stub shim.ChaincodeStubInterface, args []string) peer.Response{
 	
 	if len(args) != 2 {
@@ -85,7 +74,7 @@ func (t *SimpleAsset) Set(stub shim.ChaincodeStubInterface, args []string) peer.
 		shim.Error("asset set fail!!: " +args[0])
 	}
 
-	// world state 생성/수정
+	// world state 생성/수정 원장 등록
 	err = stub.PutState(args[0], assetAsBytes)
 	if err != nil {
 		return shim.Error("Failed to set asset: " + args[0])
@@ -94,7 +83,7 @@ func (t *SimpleAsset) Set(stub shim.ChaincodeStubInterface, args []string) peer.
 	return shim.Success(assetAsBytes)
 }
 
-// 6. get 함수  (바뀌는거 없음)
+// 6. get 함수.  Asset 조회
 func (t *SimpleAsset) Get(stub shim.ChaincodeStubInterface, args []string) peer.Response{
 
 	if len(args) != 1 {
